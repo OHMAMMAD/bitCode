@@ -56,8 +56,8 @@ while line < lenCode:
             insert = '0000'
         if command == 0 and cm == '1100':
             if code[line][1] == '1':
-                if alu.retAb()[0] != '0000':
-                    alu.setA(registers[bi2BCD(code[line][2]) - 1])
+                #if alu.retAb()[0] != '0000':
+                alu.setA(registers[bi2BCD(code[line][2]) - 1])
             else:
                 alu.setB(registers[bi2BCD(code[line][2]) - 1])
         if command == 0 and cm == '1010':
@@ -76,7 +76,7 @@ while line < lenCode:
     if insert != '0000':
         accessDis = insert
 
-    time.sleep(.4)
+    time.sleep(.5)
 
     print(f'{" ".join(code[line])}       {accessDis}    {registers}         {alu.retAb()}')
     line += 1
