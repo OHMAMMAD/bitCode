@@ -14,8 +14,11 @@ accessDis = '0000'
 
 insert = '0000'
 
-isAluSet = False
+isAluSetA = False
+isAluSetB = False
 
+isAluSetAnum = ''
+isAluSetBnum = ''
 
 
 def make_list(lst):
@@ -57,9 +60,23 @@ while line < lenCode:
         if command == 0 and cm == '1100':
             if code[line][1] == '1':
                 #if alu.retAb()[0] != '0000':
-                alu.setA(registers[bi2BCD(code[line][2]) - 1])
+                if isAluSetA == False:
+                    isAluSetAnum = bi2BCD(code[line][2]) - 1
+                    alu.setA(registers[isAluSetAnum])
+                    isAluSetA = True
+                else:
+                    isAluSetAnum = ''
+                    alu.setA('0000')
+                    isAluSetA = False
             else:
-                alu.setB(registers[bi2BCD(code[line][2]) - 1])
+                if isAluSetB == False:
+                    isAluSetBnum = bi2BCD(code[line][2]) - 1
+                    alu.setB(registers[isAluSetBnum])
+                    isAluSetB = True
+                else:
+                    isAluSetBnum = ''
+                    alu.setB('0000')
+                    isAluSetB = False
         if command == 0 and cm == '1010':
             if code[line][1] == '0':
                 if registers[3] == '0000':
@@ -71,6 +88,12 @@ while line < lenCode:
                     line = line = bi2BCD(code[line][2]) - 1
         if command == 0 and cm == '0110':
             alu.toggle_mode()
+
+
+    if isAluSetA:
+        alu.setA(registers[isAluSetAnum])
+    if isAluSetB:
+        alu.setB(registers[isAluSetBnum])
 
     accessDis = alu.output()
     if insert != '0000':
